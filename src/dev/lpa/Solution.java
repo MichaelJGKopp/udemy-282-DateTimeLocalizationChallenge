@@ -12,8 +12,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.time.format.DateTimeFormatter.ofLocalizedDateTime;
-import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.time.format.DateTimeFormatter.*;
 
 public class Solution {
   
@@ -67,6 +66,15 @@ public class Solution {
     int days = 10;
     var map = schedule(joe, jane, days);
     DateTimeFormatter dtf = ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.SHORT);
+    
+    for (LocalDate ldt : map.keySet()) {
+      System.out.println(ldt.format(ofLocalizedDate(FormatStyle.FULL)));
+      for (ZonedDateTime zdt : map.get(ldt)) {
+        System.out.println("\t" +
+                            jane.getDateInfo(zdt, dtf) + " <---> " +
+                            joe.getDateInfo(zdt.withZoneSameInstant(joe.zone), dtf));
+      }
+    }
   }
   
   private static Map<LocalDate, List<ZonedDateTime>> schedule(Employee first, Employee second,
